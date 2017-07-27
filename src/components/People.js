@@ -26,6 +26,7 @@ class People extends React.Component {
         this.state = {
             rowsPerPage: [10],
             people_list: {},
+            planet:{},
             numberOfRows: 10,
             page: 1,
             total: 87,
@@ -37,7 +38,7 @@ class People extends React.Component {
 
     componentWillReceiveProps = (nextProps) => {
 
-       this.setState({people_list:nextProps.people_list})
+       this.setState({people_list:nextProps.people_list,planet:nextProps.planet})
     }
 
     handleOpen = () => {
@@ -91,8 +92,8 @@ class People extends React.Component {
       if(this.state.people_list.results){
         data = this.state.people_list.results;
       }
-      if(this.props.planet){
-        planet = this.props.planet
+      if(this.state.planet){
+        planet = this.state.planet
       }
       return (
         <Card>
