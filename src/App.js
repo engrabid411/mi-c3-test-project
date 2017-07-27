@@ -8,7 +8,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <AppBar/>
+        <AppBar title='People List'/>
         <Divider />
         <People/>
       </div>

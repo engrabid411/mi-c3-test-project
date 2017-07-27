@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import  {fetchPeople}   from '../actions/FetchPeopleAction'
 import  {fetchPlanet}   from '../actions/FetchPlanetAction'
+import TextField from 'material-ui/TextField'
 import {
   Table,
   TableBody,
@@ -24,7 +25,7 @@ class People extends React.Component {
         super(props);
         this.state = {
             rowsPerPage: [10],
-            people_list: [],
+            people_list: {},
             numberOfRows: 10,
             page: 1,
             total: 87,
@@ -33,6 +34,12 @@ class People extends React.Component {
         this.updateRows = this.updateRows.bind(this)
 
     }
+
+    componentWillReceiveProps = (nextProps) => {
+
+       this.setState({people_list:nextProps.people_list})
+    }
+
     handleOpen = () => {
       this.setState({open: true});
     }
@@ -49,6 +56,17 @@ class People extends React.Component {
       this.props.dispatch(fetchPlanet(url))
       this.handleOpen()
     }
+
+    filterList = (event) => {
+      let peopleState = JSON.parse(JSON.stringify(this.props.people_list));
+      peopleState.results = peopleState.results.filter(people => {
+          return people.name.toLowerCase().indexOf(event.target.value) > -1;
+      });
+
+      this.setState({
+          people_list: peopleState
+      })
+    }
     render = () => {
       const viewButton = {
         color: blue500,
@@ -64,11 +82,14 @@ class People extends React.Component {
       const dialogStyle = {
         width:'300px'
       }
+      const inputStyle = {
+        width:'200px'
+      }
 
       let data = {}
       let planet = {}
-      if(this.props.people_list.results){
-        data = this.props.people_list.results;
+      if(this.state.people_list.results){
+        data = this.state.people_list.results;
       }
       if(this.props.planet){
         planet = this.props.planet
@@ -79,7 +100,10 @@ class People extends React.Component {
           <Table>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
-                <TableHeaderColumn>Name</TableHeaderColumn>
+                <TableHeaderColumn> <TextField onChange={this.filterList.bind(this)} style={inputStyle}
+                    hintText="Name"
+                  />
+                </TableHeaderColumn>
                 <TableHeaderColumn>Height</TableHeaderColumn>
                 <TableHeaderColumn>Mass</TableHeaderColumn>
                 <TableHeaderColumn>Created</TableHeaderColumn>
