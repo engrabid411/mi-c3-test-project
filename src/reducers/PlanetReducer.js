@@ -3,6 +3,7 @@ import {
   RECEIVE_PLANET
 } from '../actions/FetchPlanetAction'
 
+// its handles the state when action gets change
 const planet = (
   state={
       planet:{},

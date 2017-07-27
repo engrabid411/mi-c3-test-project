@@ -23,6 +23,7 @@ class People extends React.Component {
 
     constructor(props){
         super(props);
+        // initial state
         this.state = {
             rowsPerPage: [10],
             people_list: {},
@@ -37,10 +38,12 @@ class People extends React.Component {
     }
 
     componentWillReceiveProps = (nextProps) => {
-
+        // setting the state with next props received
        this.setState({people_list:nextProps.people_list,planet:nextProps.planet})
     }
 
+    /**********************/
+    // these two functions handleOpen and handleCloe toggle the  popup model
     handleOpen = () => {
       this.setState({open: true});
     }
@@ -48,16 +51,21 @@ class People extends React.Component {
     handleClose = () => {
       this.setState({open: false});
     }
+    /**********************/
+
+    //handle the pagination
     updateRows = (state) => {
        this.props.dispatch(fetchPeople(state.page));
        this.setState({page:state.page})
     }
 
+    // fetct the planet data and open the dialog
     showPlanet = (url) => {
       this.props.dispatch(fetchPlanet(url))
       this.handleOpen()
     }
 
+    // this function hanlde the grid filtered by the "name" key
     filterList = (event) => {
       let peopleState = JSON.parse(JSON.stringify(this.props.people_list));
       peopleState.results = peopleState.results.filter(people => {
@@ -162,6 +170,7 @@ class People extends React.Component {
 
     }
 }
+
 const mapStateToProps = state => {
   return {
     people_list: state.PeopleReducer.people_list,

@@ -10,6 +10,7 @@ function requestPlanet() {
   }
 }
 
+// set the planet object when data reqceived 
 function receivePlanet(json) {
   return {
     type: RECEIVE_PLANET,
@@ -18,6 +19,7 @@ function receivePlanet(json) {
   }
 }
 
+// This function featch the planet data againts requested url
 export function fetchPlanet(url) {
   return function (dispatch) {
     dispatch(requestPlanet())

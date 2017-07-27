@@ -4,6 +4,7 @@ import {
   CALL_FETCH_PEOPLE_REJECTED
 } from '../actions/FetchPeopleAction'
 
+// its handles the state when action gets change
 const peopleList = (
   state={
       people_list:{},
