@@ -14,8 +14,9 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 injectTapEventPlugin();
 
 let history = createHistory()
+let page = 1
 const store = configureStore()
-store.dispatch(fetchPeople())
+store.dispatch(fetchPeople(page))
 ReactDOM.render(
   <MuiThemeProvider>
     <Provider store={store}>

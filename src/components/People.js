@@ -7,11 +7,13 @@ import {
   TableHeader,
   TableHeaderColumn,
   TableRow,
-  TableRowColumn
+  TableRowColumn,
+  TableFooter
 } from 'material-ui/Table'
 import {Card} from 'material-ui/Card'
-import Divider from 'material-ui/Divider'
 import Pagination from 'materialui-pagination'
+import IconButton from 'material-ui/IconButton'
+import {blue500, greenA200} from 'material-ui/styles/colors'
 
 class People extends React.Component {
 
@@ -25,17 +27,22 @@ class People extends React.Component {
             page: 1,
             total: 87
         };
+        this.updateRows = this.updateRows.bind(this)
+
     }
-    componentWillMount = () => {
-      //console.log(this.state)
-    }
-    componentDidMount = () => {
-      // /console.log(this.state)
+    updateRows = (state) => {
+      console.log(state);
+       this.props.dispatch(fetchPeople(state.page));
+       this.setState({page:state.page})
     }
 
-
+    showPlanet = (url) => {
+      console.log(url)
+    }
     render = () => {
-      //this.setState({total:this.props.people_list.count})
+      const viewButton = {
+        color: blue500,
+      };
       let data = {}
       if(this.props.people_list.results){
         data = this.props.people_list.results;
@@ -44,7 +51,7 @@ class People extends React.Component {
         <Card>
 
           <Table>
-            <TableHeader>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
               <TableRow>
                 <TableHeaderColumn>Name</TableHeaderColumn>
                 <TableHeaderColumn>Height</TableHeaderColumn>
@@ -54,22 +61,31 @@ class People extends React.Component {
                 <TableHeaderColumn>Planet</TableHeaderColumn>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody displayRowCheckbox={false} stripedRows={true}>
             { Object.keys(data).map(
               (person, index) =>
-                <TableRow key={index}>
+                <TableRow  key={index}>
+
                   <TableRowColumn>{data[index].name}</TableRowColumn>
                   <TableRowColumn>{data[index].height}</TableRowColumn>
                   <TableRowColumn>{data[index].mass}</TableRowColumn>
                   <TableRowColumn>{data[index].created}</TableRowColumn>
                   <TableRowColumn>{data[index].edited}</TableRowColumn>
-                  <TableRowColumn>{data[index].homeworld}</TableRowColumn>
+                  <TableRowColumn>
+                  <IconButton onClick = {this.showPlanet.bind(this,data[index].homeworld)}
+                    iconClassName="material-icons"
+                    tooltip="view planet"
+                    iconStyle={viewButton}
+                  >
+                    visibility
+                  </IconButton>
+
+                  </TableRowColumn>
                 </TableRow>
             )}
 
             </TableBody>
           </Table>
-          <Divider />
           <Pagination
             total={this.state.total}
             rowsPerPage={this.state.rowsPerPage}
@@ -77,14 +93,13 @@ class People extends React.Component {
             numberOfRows={this.state.numberOfRows}
             updateRows={this.updateRows}
           />
+
         </Card>
       );
 
     }
 }
 const mapStateToProps = state => {
-  //console.log(state,state.PeopleReducer.people_list)
-
   return {
     people_list: state.PeopleReducer.people_list
   }

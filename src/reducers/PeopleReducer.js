@@ -11,7 +11,7 @@ const peopleList = (
       error: null
   },
   action) => {
-    
+
   switch (action.type) {
 
     case 'FETCH_PEOPLE':
